@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://use.fontawesome.com/releases/v5.0.6/css/all.css');
+
+details summary::-webkit-details-marker {
+	display: none;
+    outline: none;
+}
+
+details > summary {
+	list-style: none;
+    outline: none;
+}
+
+details summary:before {
+	content: '\f0fe';
+	font-family: 'Font Awesome 5 free';
+	margin-right: 7px;
+}
+
+details[open] summary:before {
+	content: '\f146';
+}
+
+details[open] summary{
+	outline: 2px dashed #999;
+}
+
+.active-radio:checked ~ .active-label{ 
+    @apply bg-gray-200
+} 
