@@ -8,7 +8,7 @@ export default function ActiveLink({ children, ...props }) {
 		<Link {...props}>
 			<a
 				className={`font-semibold ${
-					active && 'px-3 text-green-600'
+					active && 'text-green-600'
 				}`}
 			>
 				{children}
