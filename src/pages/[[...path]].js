@@ -2,8 +2,17 @@ import Head from 'next/head';
 import Image from 'next/image';
 import ActiveLink from './ActiveLink';
 import ResetButton from './ResetButton';
+import { getProducts } from 'lib/games';
 
-export default function Home() {
+export async function getServerSideProps(ctx){
+  const products = await getProducts({filter: ctx.params.path[0]}, 20)
+  return {
+    props:{products},
+  }
+} 
+
+export default function Home({products}) {
+  
   return (
     <>
       <Head>
@@ -78,20 +87,17 @@ export default function Home() {
             </details>
           </form>
         </aside>
-        <section className="mt-7 ml-20">
-          <div className="text-sm">Показано результатов: 1-50 из 2304</div>
+        <section className="pt-7 pl-10 pr-10">
+          <div className="text-sm">Показано результатов: 1-20 из {products.length}</div>
           <ResetButton className="font-extrabold uppercase text-green-700 mt-2">
             Clear Filters
           </ResetButton>
           <div className="flex gap-10 flex-wrap">
-            {[...new Array(6)].map((_, index) => (
-              <article
-                className="product w-[200px] mt-3 relative"
-                key={index + 1}
-              >
+            {products.map(({ id, image, title, price }) => (
+              <article className="product w-[200px] mt-3 relative" key={id}>
                 <div className="product-image transform transition duration-500 ease-in-out">
                   <Image
-                    src="https://store-images.s-microsoft.com/image/apps.33719.71220804959101191.bad88979-60b4-40b4-af6d-182d4534c987.ecf3220f-0497-4cf1-9cee-d46d9d86ecc3"
+                    src={image}
                     width={200}
                     height={300}
                     alt=""
@@ -101,9 +107,9 @@ export default function Home() {
                   className="game-link hover:underline font-medium text-xl break-words"
                   href="#"
                 >
-                  Far Cry®3 Classic Editional
+                  {title}
                 </a>
-                <span className="block text-lg">29,99&nbsp;$</span>
+                <span className="block text-lg">{price}&nbsp;$</span>
               </article>
             ))}
           </div>
